@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import sessions
+from routers import sessions, upload, frames
 
 app = FastAPI(title="Video Product Overlay")
 
@@ -13,6 +13,8 @@ app.add_middleware(
 )
 
 app.include_router(sessions.router)
+app.include_router(upload.router)
+app.include_router(frames.router)
 
 @app.get("/health")
 async def health():
