@@ -1,4 +1,4 @@
-import { Frame } from '../types';
+import type { Frame } from '../types';
 
 interface Props {
   frame: Frame;

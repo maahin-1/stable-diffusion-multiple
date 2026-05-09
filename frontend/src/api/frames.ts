@@ -1,5 +1,5 @@
 import client from './client';
-import { Frame } from '../types';
+import type { Frame } from '../types';
 
 export const uploadVideo = async (sessionId: string, file: File): Promise<void> => {
   const form = new FormData();

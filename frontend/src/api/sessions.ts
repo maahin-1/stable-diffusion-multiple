@@ -1,5 +1,5 @@
 import client from './client';
-import { Session } from '../types';
+import type { Session } from '../types';
 
 export const createSession = async (): Promise<Session> => {
   const res = await client.post('/api/session');

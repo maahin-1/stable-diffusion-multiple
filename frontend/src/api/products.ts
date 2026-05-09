@@ -1,5 +1,5 @@
 import client from './client';
-import { Product } from '../types';
+import type { Product } from '../types';
 
 export const uploadProduct = async (sessionId: string, file: File, tag: string): Promise<Product> => {
   const form = new FormData();

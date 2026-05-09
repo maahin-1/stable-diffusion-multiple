@@ -1,5 +1,5 @@
 import client from './client';
-import { FrameAssignment } from '../types';
+import type { FrameAssignment } from '../types';
 
 export const startProcessing = async (
   sessionId: string,

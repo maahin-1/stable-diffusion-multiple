@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Canvas, Rect, FabricImage } from 'fabric';
-import { Frame, PersonBox } from '../types';
+import type { Frame, PersonBox } from '../types';
 
 interface Props {
   frame: Frame;
@@ -12,7 +12,7 @@ interface Props {
 export function CanvasOverlay({ frame, sessionId, persons, onMaskUpdate }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fabricRef = useRef<Canvas | null>(null);
-  const [canvasReady, setCanvasReady] = useState(false);
+  const [, setCanvasReady] = useState(false);
 
   const imgSrc = `http://localhost:8000/api/session/${sessionId}/frames/${frame.filename}/image`;
 

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Session, Frame, Product, SegmentResult, FrameAssignment } from '../types';
+import type { Session, Frame, Product, SegmentResult, FrameAssignment } from '../types';
 import { createSession, deleteSession } from '../api/sessions';
 import { uploadVideo, extractFrames, listFrames, deleteFrame } from '../api/frames';
-import { uploadProduct, listProducts } from '../api/products';
+import { uploadProduct } from '../api/products';
 import { runSegmentation } from '../api/segment';
 import { startProcessing } from '../api/process';
 import { exportVideo } from '../api/export';

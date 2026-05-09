@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Product } from '../types';
+import type { Product } from '../types';
 import { ProductTag } from './ProductTag';
 
 interface ChatMessage {

@@ -1,4 +1,4 @@
-import { SegmentResult, Product, FrameAssignment } from '../types';
+import type { SegmentResult, Product, FrameAssignment } from '../types';
 
 interface Props {
   segments: SegmentResult[];

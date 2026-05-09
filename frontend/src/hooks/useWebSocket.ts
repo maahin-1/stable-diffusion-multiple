@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ProgressMessage } from '../types';
+import type { ProgressMessage } from '../types';
 
 export function useWebSocket(sessionId: string | null) {
   const [messages, setMessages] = useState<ProgressMessage[]>([]);
