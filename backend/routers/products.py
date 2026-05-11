@@ -46,3 +46,13 @@ async def list_products(session_id: str):
         raise HTTPException(status_code=404, detail="Session not found")
     index = load_product_index(session_id)
     return {"products": index}
+
+@router.get("/{session_id}/products/{tag}/{filename}/image")
+async def get_product_image(session_id: str, tag: str, filename: str):
+    if not session_exists(session_id, base=BASE_STORAGE):
+        raise HTTPException(status_code=404, detail="Session not found")
+    from fastapi.responses import FileResponse
+    path = os.path.join(get_products_dir(session_id), tag, filename)
+    if not os.path.exists(path):
+        raise HTTPException(status_code=404, detail="Product image not found")
+    return FileResponse(path, media_type="image/jpeg")

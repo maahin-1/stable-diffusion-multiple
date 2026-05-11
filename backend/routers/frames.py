@@ -1,4 +1,5 @@
 import os
+import ffmpeg as ffmpeg_lib
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
@@ -21,7 +22,11 @@ async def extract(session_id: str, body: ExtractRequest):
     if not os.path.exists(video_path):
         raise HTTPException(status_code=400, detail="No video uploaded")
     frames_dir = get_frames_dir(session_id, base=BASE_STORAGE)
-    count = extract_frames(video_path, frames_dir, fps=body.fps)
+    try:
+        count = extract_frames(video_path, frames_dir, fps=body.fps)
+    except ffmpeg_lib.Error as e:
+        stderr = e.stderr.decode() if e.stderr else "no stderr"
+        raise HTTPException(status_code=500, detail=f"ffmpeg error: {stderr}")
     return {"frame_count": count, "fps": body.fps}
 
 @router.get("/{session_id}/frames")
@@ -38,11 +43,12 @@ async def remove_frame(session_id: str, index: int):
     delete_frame(session_id, index, base=BASE_STORAGE)
     return {"deleted": index}
 
-@router.get("/{session_id}/frames/{index}/image")
-async def get_frame_image(session_id: str, index: int):
+@router.get("/{session_id}/frames/{filename}/image")
+async def get_frame_image(session_id: str, filename: str):
     if not session_exists(session_id, base=BASE_STORAGE):
         raise HTTPException(status_code=404, detail="Session not found")
-    path = get_frame_path(session_id, index, base=BASE_STORAGE)
+    frames_dir = get_frames_dir(session_id, base=BASE_STORAGE)
+    path = os.path.join(frames_dir, filename)
     if not os.path.exists(path):
         raise HTTPException(status_code=404, detail="Frame not found")
     return FileResponse(path, media_type="image/jpeg")

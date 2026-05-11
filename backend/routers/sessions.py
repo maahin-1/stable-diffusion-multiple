@@ -7,7 +7,7 @@ router = APIRouter(prefix="/api/session", tags=["sessions"])
 @router.post("")
 async def create_new_session():
     session_id = create_session(base=BASE_STORAGE)
-    return {"id": session_id}
+    return {"session_id": session_id, "created_at": ""}
 
 @router.delete("/{session_id}")
 async def delete_existing_session(session_id: str):

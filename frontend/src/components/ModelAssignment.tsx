@@ -9,7 +9,8 @@ interface Props {
 }
 
 export function ModelAssignment({ segments, products, assignments, onAssign, onBatchAssign }: Props) {
-  if (segments.length === 0) {
+  const segs = Array.isArray(segments) ? segments : [];
+  if (segs.length === 0) {
     return <p style={{ color: '#888' }}>Run segmentation first to see detected regions.</p>;
   }
 
@@ -34,7 +35,7 @@ export function ModelAssignment({ segments, products, assignments, onAssign, onB
       </div>
 
       {/* Per-frame assignment */}
-      {segments.map(seg => (
+      {segs.map(seg => (
         <div
           key={seg.frame}
           style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '6px 0', borderBottom: '1px solid #111' }}

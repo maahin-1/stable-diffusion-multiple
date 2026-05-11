@@ -139,6 +139,38 @@ function MainApp() {
             </div>
           )}
 
+          {/* Step 4: Add Products */}
+          {step === 'products' && (
+            <div>
+              <h2 style={{ color: '#ccc', marginBottom: 12 }}>Add Product Images</h2>
+              <p style={{ color: '#888', fontSize: 14, marginBottom: 16 }}>
+                Drag product images into the <strong style={{ color: '#aaa' }}>Chat panel</strong> on the right, or click inside it to browse. Each image gets a <code style={{ color: '#7ec8ff' }}>@tag</code>.
+              </p>
+              {products.length > 0 && (
+                <>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginBottom: 16 }}>
+                    {products.map(p => (
+                      <div key={p.tag} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+                        <img
+                          src={`http://localhost:8000/api/session/${session!.session_id}/products/${p.tag}/${p.filename}/image`}
+                          alt={p.tag}
+                          style={{ width: 80, height: 80, objectFit: 'cover', borderRadius: 6, border: '1px solid #333' }}
+                        />
+                        <span style={{ color: '#7ec8ff', fontSize: 12, fontFamily: 'monospace' }}>@{p.tag}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    onClick={() => setStep('assign')}
+                    style={{ background: '#1a4a1a', color: '#7fff7f', border: 'none', borderRadius: 4, padding: '8px 20px', cursor: 'pointer', fontSize: 14 }}
+                  >
+                    Continue → Assign Products
+                  </button>
+                </>
+              )}
+            </div>
+          )}
+
           {/* Step 5-6: Segmentation + Assignment */}
           {(step === 'assign' || step === 'process') && (
             <div>
@@ -189,7 +221,6 @@ function MainApp() {
               products={products}
               onAddProduct={async (file, tag) => {
                 await addProduct(file, tag);
-                if (step === 'products' && products.length >= 0) setStep('assign');
               }}
             />
           </div>

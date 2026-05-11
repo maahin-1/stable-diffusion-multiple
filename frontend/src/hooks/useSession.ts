@@ -66,13 +66,15 @@ export function useSession() {
     }
   };
 
-  const addProduct = async (file: File, tag: string) => {
-    if (!session) return;
+  const addProduct = async (file: File, tag: string): Promise<Product | null> => {
+    if (!session) return null;
     try {
       const p = await uploadProduct(session.session_id, file, tag);
       setProducts(prev => [...prev, p]);
+      return p;
     } catch (e: any) {
       setError(e.message);
+      return null;
     }
   };
 
@@ -82,7 +84,7 @@ export function useSession() {
     setError(null);
     try {
       const results = await runSegmentation(session.session_id);
-      setSegments(results);
+      setSegments(Array.isArray(results) ? results : []);
     } catch (e: any) {
       setError(e.message);
     } finally {

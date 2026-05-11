@@ -22,15 +22,23 @@ async def run_segmentation(session_id: str):
         try:
             segment_clothing(frame["path"], mask_path, api_token=HF_API_TOKEN)
             persons = detect_persons(frame["path"], api_token=HF_API_TOKEN)
+            flat_persons = [
+                {
+                    "xmin": p["box"]["xmin"], "ymin": p["box"]["ymin"],
+                    "xmax": p["box"]["xmax"], "ymax": p["box"]["ymax"],
+                    "score": p["score"],
+                }
+                for p in persons if "box" in p
+            ]
             results.append({
-                "frame_index": frame["index"],
+                "frame": frame["filename"],
                 "mask_path": mask_path,
-                "persons": persons,
+                "persons": flat_persons,
                 "error": None
             })
         except RuntimeError as e:
             results.append({
-                "frame_index": frame["index"],
+                "frame": frame["filename"],
                 "mask_path": None,
                 "persons": [],
                 "error": str(e)

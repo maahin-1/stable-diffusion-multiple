@@ -6,7 +6,7 @@ interface Props {
 }
 
 export function ProductTag({ product, sessionId }: Props) {
-  const src = `http://localhost:8000/api/session/${sessionId}/products/${product.filename}/image`;
+  const src = `http://localhost:8000/api/session/${sessionId}/products/${product.tag}/${product.filename}/image`;
 
   return (
     <span

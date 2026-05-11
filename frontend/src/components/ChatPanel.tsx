@@ -13,7 +13,7 @@ interface ChatMessage {
 interface Props {
   sessionId: string;
   products: Product[];
-  onAddProduct: (file: File, tag: string) => Promise<void>;
+  onAddProduct: (file: File, tag: string) => Promise<Product | null>;
 }
 
 export function ChatPanel({ sessionId, products, onAddProduct }: Props) {
@@ -33,25 +33,25 @@ export function ChatPanel({ sessionId, products, onAddProduct }: Props) {
     },
     accept: { 'image/*': ['.png', '.jpg', '.jpeg', '.webp'] },
     maxFiles: 1,
-    noClick: true,
+    noClick: false,
   });
 
   const confirmUpload = async () => {
     if (!pendingFile || !pendingTag.trim()) return;
-    await onAddProduct(pendingFile, pendingTag.trim());
     const tag = pendingTag.trim();
-    const product = products.find(p => p.tag === tag);
+    const file = pendingFile;
+    setPendingFile(null);
+    setPendingTag('');
+    const uploaded = await onAddProduct(file, tag);
     setMessages(prev => [
       ...prev,
       {
         id: Date.now().toString(),
         text: `Uploaded image as @${tag}`,
-        products: product ? [product] : [],
+        products: uploaded ? [uploaded] : [],
         timestamp: new Date(),
       },
     ]);
-    setPendingFile(null);
-    setPendingTag('');
     setTimeout(() => endRef.current?.scrollIntoView({ behavior: 'smooth' }), 50);
   };
 
@@ -81,6 +81,7 @@ export function ChatPanel({ sessionId, products, onAddProduct }: Props) {
         background: '#0d0d0d',
         border: '1px solid #333',
         borderRadius: 8,
+        position: 'relative',
       }}
     >
       <input {...getInputProps()} />

@@ -14,7 +14,7 @@ export const extractFrames = async (sessionId: string, fps: number): Promise<{ c
 
 export const listFrames = async (sessionId: string): Promise<Frame[]> => {
   const res = await client.get(`/api/session/${sessionId}/frames`);
-  return res.data;
+  return res.data.frames ?? res.data;
 };
 
 export const deleteFrame = async (sessionId: string, index: number): Promise<void> => {

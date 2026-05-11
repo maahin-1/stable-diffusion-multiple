@@ -1,13 +1,37 @@
+# Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-.env
 *.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# Env / secrets
+.env
+.env.local
+*.env
+
+# Build artifacts
 dist/
 build/
-.pytest_cache/
+
+# Node
 node_modules/
-dist/
 .vite/
 *.local
+
+# Local data / user uploads (per-session storage)
+sd-overlay/
+**/sd-overlay/
+
+# Claude local state
+.claude/
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db

@@ -10,7 +10,7 @@ def extract_frames(video_path: str, output_dir: str, fps: int) -> int:
     (
         ffmpeg
         .input(video_path)
-        .output(output_pattern, vf=f"fps={fps}", qscale_v=2)
+        .output(output_pattern, vf=f"fps={fps}", **{"q:v": 2})
         .run(overwrite_output=True, quiet=True)
     )
     return len([f for f in os.listdir(output_dir) if f.endswith(".jpg")])
