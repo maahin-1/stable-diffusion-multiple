@@ -1,7 +1,31 @@
-# Video Product Overlay
+# Video Product Overlay: virtual try-on for video with Stable Diffusion inpainting
 
-Replace clothing on people in a video with product images you upload — automatically, frame by frame.
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-3776AB?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/backend-FastAPI-009688?logo=fastapi&logoColor=white)
+![React](https://img.shields.io/badge/frontend-React%20%2B%20Vite-61DAFB?logo=react&logoColor=black)
 
+**Video Product Overlay is an open-source web app that replaces the clothing on people in a video with product images you upload, frame by frame.** It splits a video into frames, finds each person's clothing with a SegFormer segmentation model, swaps in your product (a t-shirt, dress or jacket tagged with `@name`) using Stable Diffusion inpainting, and stitches the frames back into a preview or full-quality video. A React wizard drives the FastAPI backend, and inpainting progress streams live over WebSocket.
+
+Use it for virtual try-on demos, fashion and e-commerce video mockups, or experiments with video inpainting. The models run on hosted APIs (Hugging Face and Replicate), so no local GPU is needed.
+
+---
+
+## Contents
+
+- [What this project does](#what-this-project-does)
+- [How it works (pipeline)](#how-it-works-pipeline)
+- [Architecture](#architecture)
+- [Storage layout](#storage-layout)
+- [Setup](#setup)
+- [API surface (REST)](#api-surface-rest)
+- [Why this approach](#why-this-approach)
+- [Limits / known constraints](#limits--known-constraints)
+- [Tech stack](#tech-stack)
+- [FAQ](#faq)
+- [License](#license)
+
+---
 ## What this project does
 
 Given a short video containing one or more people, this app lets you:
@@ -185,3 +209,29 @@ Open <http://localhost:5173>.
 **Backend:** FastAPI, uvicorn, ffmpeg-python, Pillow, numpy, requests, python-dotenv, python-multipart
 **Frontend:** React 18, Vite 8, TypeScript, axios, @tanstack/react-query, react-dropzone, fabric.js
 **Models:** Stable Diffusion inpainting (Replicate), SegFormer B2 clothes (HF), DETR ResNet-50 (HF)
+
+---
+
+## FAQ
+
+### What is Video Product Overlay?
+A FastAPI and React app that performs virtual try-on on video: it detects clothing on every person in every frame and replaces it with your uploaded product image using Stable Diffusion inpainting.
+
+### Do I need a GPU?
+No. Segmentation uses the Hugging Face Inference API and inpainting uses Replicate, so the app runs on an ordinary laptop.
+
+### What does it cost to run?
+Hugging Face's free tier covers segmentation and person detection. Replicate inpainting costs about $0.01 per frame, so cost grows linearly with frame count.
+
+### Which models does it use?
+SegFormer B2 clothes (`mattmdjaga/segformer_b2_clothes`) for clothing masks, DETR ResNet-50 for person detection, and Stable Diffusion inpainting on Replicate.
+
+### What are the known limits?
+Segmentation works best on full-body shots with simple backgrounds, the free Hugging Face tier can cold-start slowly, and it has only been tested on Windows 11 with Python 3.12 and Node 22.
+
+### Which video formats work?
+MP4, MOV and AVI uploads. Export is a 720p preview or a full-resolution HQ render through ffmpeg.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
