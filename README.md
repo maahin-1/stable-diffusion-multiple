@@ -26,6 +26,7 @@ Use it for virtual try-on demos, fashion and e-commerce video mockups, or experi
 - [License](#license)
 
 ---
+
 ## What this project does
 
 Given a short video containing one or more people, this app lets you:
